@@ -103,6 +103,40 @@ app.get("/contract/medrec", async (req, res) => {
   }
 });
 
+app.post("/contract/medrec/create", async (req, res) => {
+  const { patientName, diagnosis, treatment } = req.body;
+
+  try {
+    await contract.createMedicalRecord(patientName, diagnosis, treatment);
+    res.status(200).json({ message: "Medical record created successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Error creating medical record" });
+  }
+});
+
+app.put("/contract/medrec/update/:id", async (req, res) => {
+  const recordId = req.params.id;
+  const { diagnosis, treatment } = req.body;
+
+  try {
+    await contract.updateMedicalRecord(recordId, diagnosis, treatment);
+    res.status(200).json({ message: "Medical record updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Error updating medical record" });
+  }
+});
+
+app.delete("/contract/medrec/delete/:id", async (req, res) => {
+  const recordId = req.params.id;
+
+  try {
+    await contract.deleteMedicalRecord(recordId);
+    res.status(200).json({ message: "Medical record deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Error deleting medical record" });
+  }
+});
+
 // Start the Express server
 const PORT = 3000;
 app.listen(PORT, () => {
